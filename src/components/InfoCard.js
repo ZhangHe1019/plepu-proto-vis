@@ -105,8 +105,6 @@ const EPUInfoWithImages = () => {
                   economic growth. Tracking EPU helps analysts interpret shifts in market confidence and the
                   broader economic environment.
                 </Paragraph>
-
-                <Divider />
               </Typography>
             </div>
           </Col>
