@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Typography, Select, DatePicker, Button, Modal, InputNumber } from 'antd';
+import { Row, Col, Typography, Select, DatePicker, Button, InputNumber } from 'antd';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import dayjs from 'dayjs';
 import html2canvas from 'html2canvas';
@@ -62,7 +62,6 @@ const DataVisualizer = () => {
     dashdot: '10 5 2 5',
   };
 
-  // State for line color, line pattern, and dot shape for each currency
   const [currencyStyles, setCurrencyStyles] = useState({
     USD: { color: '#ff4500', pattern: 'solid', dotShape: 'circle' },
     EUR: { color: '#00bfff', pattern: 'solid', dotShape: 'circle' },
@@ -95,7 +94,6 @@ const DataVisualizer = () => {
           allData.push(...chartData);
         }
 
-        // Merge data points by date
         const mergedData = {};
         allData.forEach(point => {
           const date = point.date;
@@ -158,8 +156,9 @@ const DataVisualizer = () => {
         Data Dashboard
       </Title>
 
-      <Row gutter={24} align="stretch" wrap={false}>
-        <Col flex="360px" style={{ backgroundColor: '#f0f2f5', padding: 24, borderRadius: 8 }}>
+      <Row gutter={[24, 24]} wrap>
+        {/* Left Controls */}
+        <Col xs={24} sm={24} md={8} lg={6} xl={5} style={{ backgroundColor: '#f0f2f5', padding: 24, borderRadius: 8 }}>
           <div style={{ marginBottom: 16 }}>
             <label>Financial Indicators</label>
             <Select value={selectedDataType} onChange={setSelectedDataType} style={{ width: '100%' }}>
@@ -211,36 +210,42 @@ const DataVisualizer = () => {
           </div>
         </Col>
 
-        <Col flex="auto" style={{ backgroundColor, padding: 24, borderRadius: 8 }}>
+        {/* Chart Display */}
+        <Col xs={24} sm={24} md={16} lg={18} xl={19} style={{ backgroundColor: backgroundColor, padding: 24, borderRadius: 8 }}>
           <div
             ref={chartRef}
             style={{
               width: autoFitMode === 'autoFit' ? '100%' : chartWidth,
               height: autoFitMode === 'autoFit' ? 300 : chartHeight,
-              backgroundColor,
-              padding: 16,
-              borderRadius: 8,
+              fontSize,
+              fontFamily: 'Times New Roman',
+              position: 'relative',
             }}
           >
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="date" tick={{ fontSize }} />
-                <YAxis tick={{ fontSize }} domain={['dataMin - 0.1', 'dataMax + 0.1']} />
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis domain={['auto', 'auto']} />
                 <Tooltip />
                 <Legend />
                 {selectedCurrencies.map(currency => (
                   <Line
                     key={currency}
-                    type="linear"
+                    type="monotone"
                     dataKey={currency}
-                    stroke={currencyStyles[currency]?.color}
-                    strokeDasharray={linePatterns[currencyStyles[currency]?.pattern]}
-                    strokeWidth={3}
-                    dot={dotShapes[currencyStyles[currency]?.dotShape]}
+                    stroke={currencyStyles[currency].color}
+                    strokeDasharray={linePatterns[currencyStyles[currency].pattern]}
+                    dot={dotShapes[currencyStyles[currency].dotShape]}
+                    activeDot={{ r: 8 }}
+                    isAnimationActive={false}
                   >
                     {showAnnotation && (
-                      <LabelList dataKey={currency} position="top" style={{ fill: annotationFontColor, fontSize }} />
+                      <LabelList
+                        dataKey={currency}
+                        position="top"
+                        style={{ fill: annotationFontColor, fontSize }}
+                      />
                     )}
                   </Line>
                 ))}
@@ -248,131 +253,147 @@ const DataVisualizer = () => {
             </ResponsiveContainer>
           </div>
         </Col>
+      </Row>
 
-        {isEditPanelVisible && (
-          <Col flex="360px" style={{ backgroundColor: '#f0f2f5', padding: 24, borderRadius: 8, overflowY: 'auto', maxHeight: '90vh' }}>
-            <Title level={4}>Edit Graph Settings</Title>
+      {/* Edit Graph Settings Panel */}
+      {isEditPanelVisible && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 80,
+            right: 20,
+            width: 320,
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            backgroundColor: '#fff',
+            border: '1px solid #d9d9d9',
+            borderRadius: 8,
+            padding: 16,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            zIndex: 1000,
+          }}
+        >
+          <Title level={4} style={{ marginBottom: 16 }}>
+            Edit Graph Settings
+          </Title>
 
-            <div style={{ border: '1px solid #d9d9d9', padding: 12, marginBottom: 16, borderRadius: 4 }}>
-                <Title level={5} style={{ marginBottom: 8 }}>Figure & Axis Appearance</Title>
+          {/* Background Color */}
+          <div style={{ marginBottom: 16 }}>
+            <label>Background Color:</label>
+            <InputNumber
+              type="color"
+              value={backgroundColor}
+              onChange={e => setBackgroundColor(e.target.value)}
+              style={{ width: '100%' }}
+            />
+          </div>
 
+          {/* Font Size */}
+          <div style={{ marginBottom: 16 }}>
+            <label>Font Size (px):</label>
+            <InputNumber
+              min={8}
+              max={24}
+              value={fontSize}
+              onChange={setFontSize}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          {/* Annotation Font Color */}
+          <div style={{ marginBottom: 16 }}>
+            <label>Annotation Font Color:</label>
+            <InputNumber
+              type="color"
+              value={annotationFontColor}
+              onChange={e => setAnnotationFontColor(e.target.value)}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          {/* Show Annotations */}
+          <div style={{ marginBottom: 16 }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={showAnnotation}
+                onChange={e => setShowAnnotation(e.target.checked)}
+                style={{ marginRight: 8 }}
+              />
+              Show Annotations
+            </label>
+          </div>
+
+          {/* Auto Fit Mode */}
+          <div style={{ marginBottom: 16 }}>
+            <label>Auto Fit Mode:</label>
+            <Select value={autoFitMode} onChange={setAutoFitMode} style={{ width: '100%' }}>
+              <Option value="autoFit">Auto Fit</Option>
+              <Option value="manual">Manual</Option>
+            </Select>
+          </div>
+
+          {/* Chart Width & Height (Manual mode only) */}
+          {autoFitMode === 'manual' && (
+            <>
               <div style={{ marginBottom: 16 }}>
-                <label>Figure Size Mode</label>
-                <Select value={autoFitMode} onChange={setAutoFitMode} style={{ width: '100%' }}>
-                  <Option value="autoFit">Auto Fit</Option>
-                  <Option value="fixed">Fixed Size</Option>
-                </Select>
-              </div>
-
-              {autoFitMode === 'fixed' && (
-                <>
-                  <div style={{ marginBottom: 16 }}>
-                    <label>Chart Width (px)</label>
-                    <InputNumber min={200} max={2000} value={chartWidth} onChange={setChartWidth} style={{ width: '100%' }} />
-                  </div>
-
-                  <div style={{ marginBottom: 16 }}>
-                    <label>Chart Height (px)</label>
-                    <InputNumber min={100} max={1000} value={chartHeight} onChange={setChartHeight} style={{ width: '100%' }} />
-                  </div>
-                </>
-              )}
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Background Color</label>
-                <Select
-                  value={backgroundColor}
-                  onChange={setBackgroundColor}
-                  style={{ width: '100%' }}
-                >
-                  <Option value="#f0f2f5">Light Gray</Option>
-                  <Option value="#ffffff">White</Option>
-                  <Option value="#000000">Black</Option>
-                </Select>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Axis Font Size</label>
+                <label>Chart Width (px):</label>
                 <InputNumber
-                  min={8}
-                  max={32}
-                  value={fontSize}
-                  onChange={setFontSize}
+                  min={300}
+                  max={1200}
+                  value={chartWidth}
+                  onChange={setChartWidth}
                   style={{ width: '100%' }}
                 />
               </div>
-            </div>
-
-            <div style={{ border: '1px solid #d9d9d9', padding: 12, marginBottom: 16, borderRadius: 4 }}>
-                <Title level={5} style={{ marginBottom: 8 }}>Annotation Settings</Title>
-
               <div style={{ marginBottom: 16 }}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={showAnnotation}
-                    onChange={e => setShowAnnotation(e.target.checked)}
-                    style={{ marginRight: 8 }}
-                  />
-                  Show Annotations
-                </label>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Annotation Font Color</label>
-                <Select
-                  value={annotationFontColor}
-                  onChange={setAnnotationFontColor}
+                <label>Chart Height (px):</label>
+                <InputNumber
+                  min={150}
+                  max={800}
+                  value={chartHeight}
+                  onChange={setChartHeight}
                   style={{ width: '100%' }}
-                >
-                  <Option value="#003366">Dark Blue</Option>
-                  <Option value="#ff4500">Orange Red</Option>
-                  <Option value="#008000">Green</Option>
-                  <Option value="#000000">Black</Option>
-                </Select>
+                />
               </div>
-            </div>
+            </>
+          )}
 
+          {/* Currency Line Styles */}
+          <div>
+            <Title level={5}>Currency Line Styles</Title>
             {selectedCurrencies.map(currency => (
-              <div key={currency} style={{ border: '1px solid #d9d9d9', padding: 12, marginBottom: 16, borderRadius: 4 }}>
-                <Title level={5} style={{ marginBottom: 8 }}>Line Style ({currency})</Title>
-
-                <div style={{ marginBottom: 12 }}>
-                  <label>Line Color</label>
-                  <Select
-                    value={currencyStyles[currency]?.color}
-                    onChange={color => handleCurrencyStyleChange(currency, 'color', color)}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="#ff4500">Orange Red</Option>
-                    <Option value="#00bfff">Deep Sky Blue</Option>
-                    <Option value="#32cd32">Lime Green</Option>
-                    <Option value="#ff69b4">Hot Pink</Option>
-                    <Option value="#000000">Black</Option>
-                    <Option value="#800080">Purple</Option>
-                    <Option value="#ffa500">Orange</Option>
-                  </Select>
+              <div key={currency} style={{ marginBottom: 12, borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                <div><b>{currency}</b></div>
+                <div style={{ marginTop: 4 }}>
+                  <label>Color:</label>
+                  <input
+                    type="color"
+                    value={currencyStyles[currency]?.color || '#000000'}
+                    onChange={e => handleCurrencyStyleChange(currency, 'color', e.target.value)}
+                    style={{ marginLeft: 8 }}
+                  />
                 </div>
-
-                <div style={{ marginBottom: 12 }}>
-                  <label>Line Pattern</label>
+                <div style={{ marginTop: 4 }}>
+                  <label>Line Pattern:</label>
                   <Select
-                    value={currencyStyles[currency]?.pattern}
-                    onChange={pattern => handleCurrencyStyleChange(currency, 'pattern', pattern)}
+                    size="small"
+                    value={currencyStyles[currency]?.pattern || 'solid'}
+                    onChange={value => handleCurrencyStyleChange(currency, 'pattern', value)}
                     style={{ width: '100%' }}
                   >
                     <Option value="solid">Solid</Option>
                     <Option value="dashed">Dashed</Option>
                     <Option value="dotted">Dotted</Option>
-                    <Option value="dashdot">Dash Dot</Option>
+                    <Option value="dashdot">DashDot</Option>
                   </Select>
                 </div>
-
-                <div style={{ marginBottom: 12 }}>
-                  <label>Dot Shape</label>
+                <div style={{ marginTop: 4 }}>
+                  <label>Dot Shape:</label>
                   <Select
-                    value={currencyStyles[currency]?.dotShape}
-                    onChange={dotShape => handleCurrencyStyleChange(currency, 'dotShape', dotShape)}
+                    size="small"
+                    value={currencyStyles[currency]?.dotShape || 'circle'}
+                    onChange={value => handleCurrencyStyleChange(currency, 'dotShape', value)}
                     style={{ width: '100%' }}
                   >
                     <Option value="circle">Circle</Option>
@@ -383,32 +404,46 @@ const DataVisualizer = () => {
                 </div>
               </div>
             ))}
-          </Col>
-        )}
-      </Row>
+          </div>
+        </div>
+      )}
 
-      <Modal
-        title="Download Options"
-        open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-            Cancel
-          </Button>,
-          <Button key="download" type="primary" onClick={() => { handleDownload(); setIsModalVisible(false); }}>
-            Download
-          </Button>,
-        ]}
-      >
-        <Select
-          value={downloadOption}
-          onChange={setDownloadOption}
-          style={{ width: '100%' }}
+      {/* Download Modal */}
+      {isModalVisible && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1500,
+          }}
+          onClick={() => setIsModalVisible(false)}
         >
-          <Option value="visual">Visual Download (PNG)</Option>
-          <Option value="data">Data Download (CSV)</Option>
-        </Select>
-      </Modal>
+          <div
+            style={{ backgroundColor: 'white', padding: 24, borderRadius: 8, minWidth: 320 }}
+            onClick={e => e.stopPropagation()}
+          >
+            <Title level={4}>Download Chart or Data</Title>
+            <Select
+              value={downloadOption}
+              onChange={setDownloadOption}
+              style={{ width: '100%', marginBottom: 24 }}
+            >
+              <Option value="visual">Visual (PNG)</Option>
+              <Option value="data">Data (CSV)</Option>
+            </Select>
+            <Button type="primary" onClick={() => { handleDownload(); setIsModalVisible(false); }} block>
+              Download
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
