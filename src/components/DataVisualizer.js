@@ -164,7 +164,7 @@ const DataVisualizer = () => {
             <label>Financial Indicators</label>
             <Select value={selectedDataType} onChange={setSelectedDataType} style={{ width: '100%' }}>
               <Option value="exchange">Exchange Rate</Option>
-              <Option value="gold" disabled>Gold Price (Coming Soon)</Option>
+              <Option value="gold" disabled>EPU Poland (Coming Soon)</Option>
             </Select>
           </div>
 

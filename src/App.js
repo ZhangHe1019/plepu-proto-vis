@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import EpuInfoCard from './InfoCard';
+import EpuInfoCard from './components/InfoCard';
 import { Provider } from 'react-redux';
 import { ConfigProvider, Layout, Menu, Button, Form, Input, message } from 'antd';
 import DataVisualizer from './components/DataVisualizer';
+import ContactAndPartnership from './components/Contact';
 import { store } from './app/store';
 import 'antd/dist/reset.css';
 import { CloseOutlined } from '@ant-design/icons';
@@ -66,50 +67,7 @@ function App() {
       case 'methodology':
         return <EpuInfoCard />;
       case 'contact':
-        return (
-          <div style={{ maxWidth: 600, margin: '0 auto' }}>
-            <h2>Contact Us</h2>
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={handleContactSubmit}
-              style={{ marginTop: '20px' }}
-            >
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: 'Please enter your name' }]}
-              >
-                <Input placeholder="Your name" />
-              </Form.Item>
-
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                  { required: true, message: 'Please enter your email' },
-                  { type: 'email', message: 'Please enter a valid email address' },
-                ]}
-              >
-                <Input placeholder="Your email" />
-              </Form.Item>
-
-              <Form.Item
-                label="Comments"
-                name="comments"
-                rules={[{ required: true, message: 'Please enter your comments' }]}
-              >
-                <TextArea rows={4} placeholder="Your comments or message" />
-              </Form.Item>
-
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        );
+        return <ContactAndPartnership />;
       default:
         return <DataVisualizer />;
     }
