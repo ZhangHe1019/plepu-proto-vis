@@ -106,7 +106,6 @@ const EPUInfoWithImages = () => {
                   broader economic environment.
                 </Paragraph>
 
-                <Divider />
               </Typography>
             </div>
           </Col>
