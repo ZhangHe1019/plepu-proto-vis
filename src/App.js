@@ -10,6 +10,7 @@ import {
 } from 'antd';
 import DataVisualizer from './components/DataVisualizer';
 import ContactAndPartnership from './components/Contact';
+import NotesSection from './components/Note'
 import { store } from './app/store';
 import 'antd/dist/reset.css';
 import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
@@ -63,6 +64,7 @@ function App() {
                 <DataVisualizer />
               </div>
             ))}
+            <NotesSection />
           </>
         );
       case 'methodology':
@@ -134,7 +136,9 @@ function App() {
         <div style={{ height: '4px', backgroundColor: '#ccc' }}></div>
 
         <Content style={{ backgroundColor: 'white', padding: '40px', minHeight: 'calc(100vh - 136px)' }}>
-          {renderContent()}
+          <div style={{ maxWidth: 1600, margin: '0 auto'}}>
+            {renderContent()}
+          </div>
         </Content>
 
         <Footer style={{ textAlign: 'center', backgroundColor: '#f0f2f5', marginTop: 'auto' }}>

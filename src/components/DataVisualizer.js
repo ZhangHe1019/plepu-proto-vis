@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Typography, Select, DatePicker, Button, InputNumber } from 'antd';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
+import { Row, Col, Typography, Divider, Select, DatePicker, Button, Input, InputNumber } from 'antd';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceArea, LabelList, Label } from 'recharts';
 import dayjs from 'dayjs';
+import SocialLinks from './Sociallinks';
 import html2canvas from 'html2canvas';
 
 const { Title } = Typography;
@@ -36,7 +37,7 @@ const DataVisualizer = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [downloadOption, setDownloadOption] = useState('visual');
   const [isEditPanelVisible, setIsEditPanelVisible] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState('#f0f2f5');
+  const [backgroundColor, setBackgroundColor] = useState('#e6f3ff');
   const [fontSize, setFontSize] = useState(12);
   const [annotationFontColor, setAnnotationFontColor] = useState('#003366');
   const [showAnnotation, setShowAnnotation] = useState(false);
@@ -63,7 +64,7 @@ const DataVisualizer = () => {
   };
 
   const [currencyStyles, setCurrencyStyles] = useState({
-    USD: { color: '#ff4500', pattern: 'solid', dotShape: 'circle' },
+    USD: { color: '#0011ffff', pattern: 'solid', dotShape: 'circle' },
     EUR: { color: '#00bfff', pattern: 'solid', dotShape: 'circle' },
     GBP: { color: '#32cd32', pattern: 'solid', dotShape: 'circle' },
     CHF: { color: '#ff69b4', pattern: 'solid', dotShape: 'circle' },
@@ -153,107 +154,147 @@ const DataVisualizer = () => {
   return (
     <>
       <Title level={2} style={{ color: '#003366', fontFamily: 'Times New Roman' }}>
-        Data Dashboard
+        Global Economic Policy Uncertainty Index: Current Price Adjusted GDP (GEPUCURRENT)
       </Title>
-
-      <Row gutter={[24, 24]} wrap>
-        {/* Left Controls */}
-        <Col xs={24} sm={24} md={8} lg={6} xl={5} style={{ backgroundColor: '#f0f2f5', padding: 24, borderRadius: 8 }}>
-          <div style={{ marginBottom: 16 }}>
-            <label>Financial Indicators</label>
-            <Select value={selectedDataType} onChange={setSelectedDataType} style={{ width: '100%' }}>
-              <Option value="exchange">Exchange Rate</Option>
-              <Option value="gold" disabled>EPU Poland (Coming Soon)</Option>
-            </Select>
-          </div>
-
-          {selectedDataType === 'exchange' && (
+      <Divider style={{ borderColor: 'black' }}/>
+      <div style={{ maxWidth: 1600, margin: '0 auto', padding: 24}}>
+        <Row gutter={[24, 24]} wrap>
+          {/* Left Controls */}
+          <Col xs={24} sm={24} md={8} lg={6} xl={5} style={{ backgroundColor: '#e6f3ff', padding: 24, borderRadius: 8 }}>
             <div style={{ marginBottom: 16 }}>
-              <label>Select Currencies</label>
-              <Select
-                mode="multiple"
-                placeholder="Select currencies"
-                value={selectedCurrencies}
-                onChange={setSelectedCurrencies}
-                style={{ width: '100%' }}
-              >
-                {currencyOptions.map(c => (
-                  <Option key={c.value} value={c.value}>{c.label}</Option>
-                ))}
+              <label>Financial Indicators</label>
+              <Select value={selectedDataType} onChange={setSelectedDataType} style={{ width: '100%' }}>
+                <Option value="exchange">Exchange Rate</Option>
+                <Option value="gold" disabled>EPU Poland (Coming Soon)</Option>
               </Select>
             </div>
-          )}
 
-          <div style={{ marginBottom: 16 }}>
-            <label>Frequency</label>
-            <Select value={frequency} onChange={setFrequency} style={{ width: '100%' }}>
-              <Option value="daily">Daily</Option>
-            </Select>
-          </div>
+            {selectedDataType === 'exchange' && (
+              <div style={{ marginBottom: 16 }}>
+                <label>Select Currencies</label>
+                <Select
+                  mode="multiple"
+                  placeholder="Select currencies"
+                  value={selectedCurrencies}
+                  onChange={setSelectedCurrencies}
+                  style={{ width: '100%' }}
+                >
+                  {currencyOptions.map(c => (
+                    <Option key={c.value} value={c.value}>{c.label}</Option>
+                  ))}
+                </Select>
+              </div>
+            )}
 
-          <div style={{ marginBottom: 16 }}>
-            <label>Date Range</label>
-            <RangePicker
-              value={dateRange}
-              onChange={setDateRange}
-              allowClear
-              style={{ width: '100%' }}
-              disabledDate={current => current && current > dayjs().endOf('day')}
-            />
-          </div>
+            <div style={{ marginBottom: 16 }}>
+              <label>Frequency</label>
+              <Select value={frequency} onChange={setFrequency} style={{ width: '100%' }}>
+                <Option value="daily">Daily</Option>
+              </Select>
+            </div>
 
-          <div style={{ marginTop: 24 }}>
-            <Button type="primary" style={{ marginRight: 12 }} onClick={() => setIsEditPanelVisible(!isEditPanelVisible)}>
-              {isEditPanelVisible ? 'Close Edit Panel' : 'Edit Graph'}
-            </Button>
-            <Button onClick={() => setIsModalVisible(true)}>Download</Button>
-          </div>
-        </Col>
+            <div style={{ marginBottom: 16 }}>
+              <label>Date Range</label>
+              <RangePicker
+                value={dateRange}
+                onChange={setDateRange}
+                allowClear
+                style={{ width: '100%' }}
+                disabledDate={current => current && current > dayjs().endOf('day')}
+              />
+            </div>
 
-        {/* Chart Display */}
-        <Col xs={24} sm={24} md={16} lg={18} xl={19} style={{ backgroundColor: backgroundColor, padding: 24, borderRadius: 8 }}>
-          <div
-            ref={chartRef}
-            style={{
-              width: autoFitMode === 'autoFit' ? '100%' : chartWidth,
-              height: autoFitMode === 'autoFit' ? 300 : chartHeight,
-              fontSize,
-              fontFamily: 'Times New Roman',
-              position: 'relative',
-            }}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={['auto', 'auto']} />
-                <Tooltip />
-                <Legend />
-                {selectedCurrencies.map(currency => (
-                  <Line
-                    key={currency}
-                    type="monotone"
-                    dataKey={currency}
-                    stroke={currencyStyles[currency].color}
-                    strokeDasharray={linePatterns[currencyStyles[currency].pattern]}
-                    dot={dotShapes[currencyStyles[currency].dotShape]}
-                    activeDot={{ r: 8 }}
-                    isAnimationActive={false}
-                  >
-                    {showAnnotation && (
-                      <LabelList
-                        dataKey={currency}
-                        position="top"
-                        style={{ fill: annotationFontColor, fontSize }}
-                      />
-                    )}
-                  </Line>
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </Col>
-      </Row>
+            <div style={{ marginTop: 24 }}>
+              <Button type="primary" style={{ marginRight: 12 }} onClick={() => setIsEditPanelVisible(!isEditPanelVisible)}>
+                {isEditPanelVisible ? 'Close Edit Panel' : 'Edit Graph'}
+              </Button>
+              <Button onClick={() => setIsModalVisible(true)}>Download</Button>
+            </div>
+          </Col>
+
+          {/* Chart Display */}
+          <Col xs={24} sm={24} md={16} lg={18} xl={19} style={{ backgroundColor: backgroundColor, padding: 24, borderRadius: 8 }}>
+            <div
+              ref={chartRef}
+              style={{
+                width: autoFitMode === 'autoFit' ? '100%' : chartWidth,
+                height: autoFitMode === 'autoFit' ? 300 : chartHeight,
+                fontSize,
+                fontFamily: 'Times New Roman',
+                position: 'relative',
+              }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" fill="#ffffff" fillOpacity={1}/>
+                  <XAxis dataKey="date" tick={{ fill: 'black' }}/>
+                  <YAxis domain={['auto', 'auto']} tick={{ fill: 'black' }}>
+                    <Label
+                      value="Exchange Rate"
+                      angle={-90}
+                      position="insideLeft"
+                      style={{ textAnchor: 'middle', fill: '#000', fontSize }}
+                    />
+                  </YAxis>
+                  <Tooltip
+                    contentStyle={{ fontSize, fontFamily: 'Times New Roman' }}
+                    cursor={{ stroke: '#000000', strokeWidth: 1 }}
+                  />
+                  <Legend
+                    verticalAlign="top"
+                    align="left"
+                    wrapperStyle={{
+                      paddingBottom: 10,
+                      fontSize: fontSize + 2,
+                      fontFamily: 'Times New Roman',
+                    }}
+                  />
+                  {selectedCurrencies.map(currency => (
+                    <Line
+                      key={currency}
+                      type="monotone"
+                      dataKey={currency}
+                      stroke={currencyStyles[currency].color}
+                      strokeDasharray={linePatterns[currencyStyles[currency].pattern]}
+                      dot={dotShapes[currencyStyles[currency].dotShape]}
+                      activeDot={{ r: 8 }}
+                      isAnimationActive={false}
+                    >
+                      {showAnnotation && (
+                        <LabelList
+                          dataKey={currency}
+                          position="top"
+                          style={{ fill: annotationFontColor, fontSize }}
+                        />
+                      )}
+                    </Line>
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div
+              style={{
+                marginTop: 3,
+                fontSize: 15,
+                fontStyle: 'italic',
+                color: 'black',
+                fontFamily: 'Times New Roman',
+                textAlign: 'center',
+                marginBottom: '10px',
+              }}
+              >
+                🗂️ Source: Landowska, Alina; Kłopotek, Robert; Zhang, He via EPUI PL
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={[24, 24]} wrap>
+          <Col span={24}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+              <SocialLinks />
+            </div>
+          </Col>
+        </Row>
+      </div>
 
       {/* Edit Graph Settings Panel */}
       {isEditPanelVisible && (
@@ -280,7 +321,7 @@ const DataVisualizer = () => {
           {/* Background Color */}
           <div style={{ marginBottom: 16 }}>
             <label>Background Color:</label>
-            <InputNumber
+            <Input
               type="color"
               value={backgroundColor}
               onChange={e => setBackgroundColor(e.target.value)}
@@ -303,7 +344,7 @@ const DataVisualizer = () => {
           {/* Annotation Font Color */}
           <div style={{ marginBottom: 16 }}>
             <label>Annotation Font Color:</label>
-            <InputNumber
+            <Input
               type="color"
               value={annotationFontColor}
               onChange={e => setAnnotationFontColor(e.target.value)}
