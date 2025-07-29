@@ -1,5 +1,5 @@
 import { Row, Col, Typography, Image, Divider } from 'antd';
-import PolandEPUIndexTimeline from './methodology';
+import PolandEPUIndexTimeline from './Methodology';
 import InfoBoxes from './InfoBoxes'; // adjust path if needed
 
 const { Title, Paragraph, Text } = Typography;

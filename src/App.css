@@ -60,3 +60,16 @@ body {
   color: white !important;
 }
 
+/* Text color for selected menu item */
+.ant-menu-item-selected {
+  color: red !important;
+}
+
+/* Optional: change the background color of selected menu item */
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: #330000 !important; /* dark red bg */
+}
+
+.ant-menu-light .ant-menu-item-selected {
+  background-color: #ffe6e6 !important; /* light red/pink bg */
+}

@@ -105,52 +105,6 @@ const ContactAndPartnership = () => {
           </Form.Item>
         </Form>
       </div>
-
-      {/* Partnership Section */}
-      <div
-        style={{
-          background: '#f9fbfc',
-          padding: '40px 20px',
-          borderRadius: 12,
-          boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-          textAlign: 'center',
-        }}
-      >
-        <h3
-          style={{
-            fontWeight: '600',
-            fontSize: '1.8rem',
-            color: '#333',
-            marginBottom: 24,
-          }}
-        >
-          Our Trusted Partner
-        </h3>
-
-        <img
-          src="/mediaboardlogo.png" // Replace with actual path to Mediaboard logo
-          alt="Mediaboard Logo"
-          style={{
-            width: 180,
-            marginBottom: 20,
-            filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))',
-          }}
-        />
-
-        <p
-          style={{
-            maxWidth: 480,
-            margin: '0 auto',
-            fontSize: 16,
-            lineHeight: 1.6,
-            color: '#555',
-            fontWeight: 500,
-          }}
-        >
-          We proudly collaborate with Mediaboard to deliver exceptional media monitoring and analytics
-          services, ensuring you receive the best insights for your data-driven decisions.
-        </p>
-      </div>
     </div>
   );
 };

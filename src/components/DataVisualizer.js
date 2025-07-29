@@ -37,7 +37,7 @@ const DataVisualizer = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [downloadOption, setDownloadOption] = useState('visual');
   const [isEditPanelVisible, setIsEditPanelVisible] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState('#e6f3ff');
+  const [backgroundColor, setBackgroundColor] = useState('#e6f0fa');
   const [fontSize, setFontSize] = useState(12);
   const [annotationFontColor, setAnnotationFontColor] = useState('#003366');
   const [showAnnotation, setShowAnnotation] = useState(false);
@@ -64,7 +64,7 @@ const DataVisualizer = () => {
   };
 
   const [currencyStyles, setCurrencyStyles] = useState({
-    USD: { color: '#0011ffff', pattern: 'solid', dotShape: 'circle' },
+    USD: { color: '#02273b', pattern: 'solid', dotShape: 'circle' },
     EUR: { color: '#00bfff', pattern: 'solid', dotShape: 'circle' },
     GBP: { color: '#32cd32', pattern: 'solid', dotShape: 'circle' },
     CHF: { color: '#ff69b4', pattern: 'solid', dotShape: 'circle' },
@@ -153,14 +153,19 @@ const DataVisualizer = () => {
 
   return (
     <>
-      <Title level={2} style={{ color: '#003366', fontFamily: 'Times New Roman' }}>
-        Global Economic Policy Uncertainty Index: Current Price Adjusted GDP (GEPUCURRENT)
+      <Title level={2} style={{ color: '#02273b', fontFamily: 'Times New Roman' }}>
+        <span style={{ fontSize: '25px' }}>
+          Global Economic Policy Uncertainty Index: Current Price Adjusted GDP
+        </span>{' '}
+        <span style={{ fontSize: '16px' }}>
+          (GEPUCURRENT)
+        </span>
       </Title>
       <Divider style={{ borderColor: 'black' }}/>
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: 24}}>
         <Row gutter={[24, 24]} wrap>
           {/* Left Controls */}
-          <Col xs={24} sm={24} md={8} lg={6} xl={5} style={{ backgroundColor: '#e6f3ff', padding: 24, borderRadius: 8 }}>
+          <Col xs={24} sm={24} md={8} lg={6} xl={5} style={{ backgroundColor: '#e6f0fa', padding: 24, borderRadius: 8 }}>
             <div style={{ marginBottom: 16 }}>
               <label>Financial Indicators</label>
               <Select value={selectedDataType} onChange={setSelectedDataType} style={{ width: '100%' }}>
@@ -283,7 +288,7 @@ const DataVisualizer = () => {
                 marginBottom: '10px',
               }}
               >
-                🗂️ Source: Landowska, Alina; Kłopotek, Robert; Zhang, He via EPUI PL
+                🗂️ Source: Alina Landowska, Robert Kłopotek, He Zhang via EPUI PL
             </div>
           </Col>
         </Row>

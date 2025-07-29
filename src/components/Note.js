@@ -39,19 +39,19 @@ const NotesSection = () => {
       >
         <div>
           <Text strong>Source:</Text>{' '}
-          <Link href="https://example.com/baker" target="_blank" rel="noopener noreferrer">
+          <Link href="https://example.com/baker" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>
             Alina Landowska
           </Link>
         </div>
         <div>
           <Text strong>Source:</Text>{' '}
-          <Link href="https://example.com/bloom" target="_blank" rel="noopener noreferrer">
+          <Link href="https://example.com/bloom" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>
             Robert Kłopotek
           </Link>
         </div>
         <div>
           <Text strong>Source:</Text>{' '}
-          <Link href="https://example.com/davis" target="_blank" rel="noopener noreferrer">
+          <Link href="https://example.com/davis" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>
             He Zhang
           </Link>
         </div>
@@ -59,7 +59,7 @@ const NotesSection = () => {
 
       <Paragraph>
         <Text strong>Release:</Text>{' '}
-        <Link href="https://example.com/epu" target="_blank" rel="noopener noreferrer">
+        <Link href="https://example.com/epu" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>
           Economic Policy Uncertainty
         </Link>
       </Paragraph>
@@ -75,13 +75,13 @@ const NotesSection = () => {
           EPUI PL is a daily national-level index of economic policy uncertainty for Poland. The Polish index is
           constructed by analyzing the frequency of specific keywords related to economic policy uncertainty appearing
           in major Polish media outlets. The <a href="https://www.policyuncertainty.com/" 
-          target="_blank" rel="noopener noreferrer">Baker, Bloom, and Davis (2012)</a> methodology has been adapted to reflect the
+          target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Baker, Bloom, and Davis (2012)</a> methodology has been adapted to reflect the
           characteristics of the Polish media landscape, language, and national economic and political context.
         </Paragraph>
         <Paragraph>
           EPUI PL is now a part of the original <a href="https://fred.stlouisfed.org/series/GEPUCURRENT" 
-          target="_blank" rel="noopener noreferrer">Global Economic Policy Uncertainty Index (GEPU)</a> — introduced by <a 
-          href="https://www.policyuncertainty.com/media/EPU_BBD_Mar2016.pdf" target="_blank" rel="noopener noreferrer">Baker, Bloom, and Davis (2016)</a>. It represents a GDP-weighted average of national EPU indices for 20 countries,
+          target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Global Economic Policy Uncertainty Index (GEPU)</a> — introduced by <a 
+          href="https://www.policyuncertainty.com/media/EPU_BBD_Mar2016.pdf" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Baker, Bloom, and Davis (2016)</a>. It represents a GDP-weighted average of national EPU indices for 20 countries,
           including the United States, Germany, China, Japan, and the United Kingdom.
         </Paragraph>
       </div>
@@ -92,7 +92,7 @@ const NotesSection = () => {
         Other Format
       </Title>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-        <a href="https://example.com/economic-policy-uncertainty" target="_blank" rel="noopener noreferrer">
+        <a href="https://example.com/economic-policy-uncertainty" target="_blank" rel="noopener noreferrer" className="hover-red-button">
           <Button size="small" style={tagButtonStyle}>
             Daily, Not Seasonally Adjusted
           </Button>
@@ -104,12 +104,12 @@ const NotesSection = () => {
         Related Categories
       </Title>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-        <a href="https://example.com/economic-policy-uncertainty" target="_blank" rel="noopener noreferrer">
+        <a href="https://example.com/economic-policy-uncertainty" target="_blank" rel="noopener noreferrer" className="hover-red-button">
           <Button size="small" style={tagButtonStyle}>
             Economic Policy Uncertainty
           </Button>
         </a>
-        <a href="https://example.com/academic-data" target="_blank" rel="noopener noreferrer">
+        <a href="https://example.com/academic-data" target="_blank" rel="noopener noreferrer" className="hover-red-button">
           <Button size="small" style={tagButtonStyle}>
             Academic Data
           </Button>
@@ -120,7 +120,7 @@ const NotesSection = () => {
         Releases
       </Title>
       <Paragraph>
-        <a href="https://example.com/more-series" target="_blank" rel="noopener noreferrer">
+        <a href="https://example.com/more-series" target="_blank" rel="noopener noreferrer" className="hover-red-button">
           <Button size="small" style={tagButtonStyle}>
             More Series from Economic Policy Uncertainty
           </Button>
@@ -146,13 +146,23 @@ const NotesSection = () => {
           { label: 'Not Seasonally Adjusted', url: 'https://example.com/not-seasonally-adjusted' },
           { label: 'United States of America', url: 'https://example.com/usa' },
         ].map(({ label, url }) => (
-          <a key={label} href={url} target="_blank" rel="noopener noreferrer">
+          <a key={label} href={url} target="_blank" rel="noopener noreferrer" className="hover-red-button">
             <Button size="small" style={tagButtonStyle}>
               {label}
             </Button>
           </a>
         ))}
       </div>
+      <style>{`
+        a:hover {
+          color: #f0535a !important;
+          text-decoration: none;
+        }
+        .hover-red-button:hover button {
+          color: #f0535a !important;
+          border-color: red !important;
+      `}
+      </style>
     </div>
   );
 };
