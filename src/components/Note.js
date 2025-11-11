@@ -29,7 +29,7 @@ const NotesSection = () => {
       <Divider style={{ borderTop: '2px solid #bbb', margin: '1rem 0' }} />
 
       {/* Horizontal Sources */}
-      <div
+      {/* <div
         style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -55,7 +55,7 @@ const NotesSection = () => {
             He Zhang
           </Link>
         </div>
-      </div>
+      </div> */}
 
       <Paragraph>
         <Text strong>Release:</Text>{' '}
@@ -67,26 +67,28 @@ const NotesSection = () => {
         <Text strong>Units:</Text> Index, Not Seasonally Adjusted
       </Paragraph>
       <Paragraph>
-        <Text strong>Frequency:</Text> Monthly
+        <Text strong>Frequency:</Text> Daily/Monthly
       </Paragraph>
 
+      
       <div style={{ marginBottom: '1.5rem', lineHeight: 1.6 }}>
         <Paragraph>
-          EPUI PL is a daily national-level index of economic policy uncertainty for Poland. The Polish index is
+          PL EPU Index is a daily national-level index of economic policy uncertainty for Poland. The Polish index is
           constructed by analyzing the frequency of specific keywords related to economic policy uncertainty appearing
-          in major Polish media outlets. The <a href="https://www.policyuncertainty.com/" 
-          target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Baker, Bloom, and Davis (2012)</a> methodology has been adapted to reflect the
-          characteristics of the Polish media landscape, language, and national economic and political context.
-        </Paragraph>
-        <Paragraph>
-          EPUI PL is now a part of the original <a href="https://fred.stlouisfed.org/series/GEPUCURRENT" 
-          target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Global Economic Policy Uncertainty Index (GEPU)</a> — introduced by <a 
-          href="https://www.policyuncertainty.com/media/EPU_BBD_Mar2016.pdf" target="_blank" rel="noopener noreferrer" style={{color: 'black', textDecoration: 'underline'}}>Baker, Bloom, and Davis (2016)</a>. It represents a GDP-weighted average of national EPU indices for 20 countries,
-          including the United States, Germany, China, Japan, and the United Kingdom.
+          in major Polish media outlets. The methodology follows{" "}
+          <a 
+            href="https://static1.squarespace.com/static/5e2ea3a8097ed30c779bd707/t/5e305a3e898d7b14b76346da/1580227135606/Global+Economic+Policy+Uncertainty+9+October+2016.pdf" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: 'black', textDecoration: 'underline' }}
+          >
+            “An Index of Global Economic Policy Uncertainty,” <em>Macroeconomic Review</em>, October 2016
+          </a>
+          , adapted to reflect the characteristics of the Polish media landscape, language, and national economic and political context.
         </Paragraph>
       </div>
 
-      <Divider style={{ borderTop: '2px solid #bbb', margin: '1rem 0' }} />
+      {/* <Divider style={{ borderTop: '2px solid #bbb', margin: '1rem 0' }} />
 
       <Title level={5} style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>
         Other Format
@@ -152,7 +154,7 @@ const NotesSection = () => {
             </Button>
           </a>
         ))}
-      </div>
+      </div> */}
       <style>{`
         a:hover {
           color: #f0535a !important;

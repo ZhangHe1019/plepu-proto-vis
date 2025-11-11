@@ -2,19 +2,22 @@ import React from 'react';
 
 const infoData = [
   {
-    label: 'Source',
-    content: 'View Media Source Table',
-    link: '/media-sources',
+    label: 'Media Sources',
+    content: 'See the newspapers and outlets we analyze',
+    link: 'https://example.com/',
+    image: '/newspaper.jpg',
   },
   {
-    label: 'Keywords',
-    content: 'View EPU Keywords Table',
-    link: '/epu-keywords',
+    label: 'Keyword List ',
+    content: 'Explore the terms used to measure uncertainty',
+    link: 'https://example.com/',
+    image: '/laptop data dashboard.jpg',
   },
   {
-    label: 'Country-specific Data',
-    content: 'View Economic Policy Uncertainty Website',
-    link: 'https://www.policyuncertainty.com',
+    label: 'Global Comparisons',
+    content: 'Access country-level EPU data worldwide',
+    link: 'https://example.com/',
+    image: '/compass.jpg',
   },
 ];
 
@@ -32,27 +35,50 @@ const InfoBoxes = () => {
         }
 
         .info-box {
+          position: relative;
           flex: 1 1 250px;
           max-width: 280px;
           aspect-ratio: 1 / 1;
           border-radius: 12px;
-          background-color: #002766; /* Dark blue */
-          box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-          padding: 20px;
+          overflow: hidden;
           cursor: pointer;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.1);
           transition: transform 0.2s ease, background-color 0.3s ease;
+          text-decoration: none;
+          color: white;
+
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           text-align: center;
-          text-decoration: none;
-          color: white;
+          padding: 0; /* Remove padding so image fills whole box */
         }
 
         .info-box:hover {
           transform: translateY(-6px);
-          background-color: #1890ff; /* Lighter blue on hover */
+          background-color: #1890ff; /* fallback background color on hover */
+        }
+
+        .info-image {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* cover entire box */
+          filter: brightness(0.6); /* darken image so text is readable */
+          transition: filter 0.3s ease;
+          z-index: 0;
+        }
+
+        .info-box:hover .info-image {
+          filter: brightness(0.8);
+        }
+
+        .info-text {
+          position: relative;
+          z-index: 1;
+          padding: 20px;
         }
 
         .info-title {
@@ -79,13 +105,22 @@ const InfoBoxes = () => {
         {infoData.map((item, index) => (
           <a
             key={index}
-            href={item.link}
+            // href={item.link}
             className="info-box"
-            target={item.link.startsWith('http') ? '_blank' : '_self'}
+            // target={item.link.startsWith('http') ? '_blank' : '_self'}
             rel="noopener noreferrer"
           >
-            <div className="info-title">{item.label}</div>
-            <div className="info-description">{item.content}</div>
+            {item.image && (
+              <img
+                src={item.image}
+                alt={`${item.label} icon`}
+                className="info-image"
+              />
+            )}
+            <div className="info-text">
+              <div className="info-title">{item.label}</div>
+              <div className="info-description">{item.content}</div>
+            </div>
           </a>
         ))}
       </div>

@@ -1,1 +1,2 @@
-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
+Github Token: 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
+FRED registered API key is: 8faf4970502f65e94410701620e282d0 Documentation is available on the St. Louis Fed web services website.

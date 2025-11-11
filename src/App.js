@@ -15,6 +15,8 @@ import PartnershipPage from './components/Partners';
 import { store } from './app/store';
 import 'antd/dist/reset.css';
 import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
+import Login from './components/Login';  // ✅ import Login
+import Blogs from './components/Blogs';
 
 const { Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
@@ -23,6 +25,7 @@ function App() {
   const [selectedMenu, setSelectedMenu] = useState('data');
   const [visualizerList, setVisualizerList] = useState([1]);
   const [drawerVisible, setDrawerVisible] = useState(false);
+   const [token, setToken] = useState(''); // ✅ token state
   const screens = useBreakpoint();
 
   const addVisualizer = () => {
@@ -62,7 +65,7 @@ function App() {
                     color: '#999',
                   }}
                 />
-                <DataVisualizer />
+                <DataVisualizer /> {/* ✅ pass token */}
               </div>
             ))}
             <NotesSection />
@@ -70,6 +73,8 @@ function App() {
         );
       case 'methodology':
         return <EpuInfoCard />;
+      case 'blog':
+        return <Blogs />;
       case 'partners':
         return <PartnershipPage />;
       case 'contact':
@@ -85,46 +90,61 @@ function App() {
       mode={screens.md ? 'horizontal' : 'vertical'}
       selectedKeys={[selectedMenu]}
       onClick={(e) => {
-        setSelectedMenu(e.key);
+        const disabledKeys = ['finance', 'energy', 'construction', 'it'];
+        if (!disabledKeys.includes(e.key)) {
+          setSelectedMenu(e.key);
+        }
         setDrawerVisible(false);
       }}
       style={{
         backgroundColor: screens.md ? '#02273b' : undefined,
-        fontSize: screens.md ? '15px' : '16px',
-        lineHeight: screens.md ? '128px' : 'normal',
+        fontSize: screens.md ? '15px' : '15px',
+        lineHeight: screens.md ? '96px' : 'normal',
         padding: '0 20px',
       }}
     >
       <Menu.Item key="data">Data</Menu.Item>
       <Menu.Item key="methodology">Methodology</Menu.Item>
+      <Menu.SubMenu key="sectors" title="Sectors">
+        <Menu.Item key="finance">Finance and Insurance</Menu.Item>
+        <Menu.Item key="energy">Energy and Fuels</Menu.Item>
+        <Menu.Item key="construction">Construction and Infrastructure</Menu.Item>
+        <Menu.Item key="it">IT and Digital Services</Menu.Item>
+        </Menu.SubMenu>
+      <Menu.Item key="blog">Blogs</Menu.Item>
       <Menu.Item key="partners">Partners</Menu.Item>
       <Menu.Item key="contact">Contact Us</Menu.Item>
     </Menu>
   );
 
+  // ✅ Main return: login gate
+  // if (!token) return <Login onLogin={setToken} />; // show login if not logged in
   return (
     <Provider store={store}>
       <Layout>
-        <Header style={{ backgroundColor: '#02273b', padding: '0 20px', height: '128px' }}>
+        <Header style={{ backgroundColor: '#02273b', padding: '0 20px', height: '96px' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'flex-end',
-              height: '128px',
+              height: '96px',
               justifyContent: 'space-between',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-              <img
-                src="/EPUlogo.png"
-                alt="Logo"
-                style={{
-                  height: screens.md ? '320px' : '200px',
-                  marginRight: 12,
-                  marginTop: screens.md ? 16 : 40,
-                  objectFit: 'contain',
-                }}
-              />
+              <a href="/" style={{ display: 'flex', alignItems: 'center' }}>
+                <img
+                  src="/EPUlogo.png"
+                  alt="Logo"
+                  style={{
+                    height: screens.md ? '300px' : '180px',
+                    marginRight: 0,
+                    marginLeft: 0, 
+                    marginTop: screens.md ? 50: 30,
+                    objectFit: 'contain',
+                  }}
+                />
+              </a>
             </div>
 
             {screens.md ? (
