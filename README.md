@@ -1,4 +1,4 @@
-# EPU Poland Website
+# PLEPU Proto Website
 
 A responsive, frontend-only React website for visualizing Economic Policy Uncertainty (EPU) in Poland. Users can explore data dashboards, view methodology information, and contact the EPU Poland team.  
 
