@@ -1,8 +1,8 @@
-# PLEPU Proto Website
+# EconViz Proto
 
-A responsive, frontend-only React website for visualizing Economic Policy Uncertainty (EPU) in Poland. Users can explore data dashboards, view methodology information, and contact the EPU Poland team.  
+A responsive, frontend-only React proto website structure for visualizing Economic Policy Uncertainty (EPU) in Poland. Users can explore data dashboards, view methodology information, and contact the EPU Poland team.  
 
-Built with **React**, **Ant Design**, and **Redux** (for state management).
+Built with **React**, **Ant Design**, and **Redux** (for state management). The latest version for PLEPU visualisation can be seen: https://epu-index.pl/
 
 ---
 
